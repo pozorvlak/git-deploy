@@ -1,15 +1,17 @@
 #!/bin/sh
 
-HOST=`git config --get deploy.host` || \
-	(echo "deploy.host not set!" >&2 ; exit 1)
-DIR=`git config --get deploy.dir` || \
-	(echo "deploy.dir not set!" >&2 ; exit 2)
+die() {
+	echo $1 >&2
+	exit 1
+}
 
+HOST=`git config --get deploy.host` || die "deploy.host not set!"
+DIR=`git config --get deploy.dir`   || die "deploy.dir not set!"
 if [ -z "$HOST" ]; then
-	echo "deploy.host should be nonempty." &>2
+	echo "deploy.host should be nonempty." >&2
 	exit 3
 fi
 # It's totally OK for DIR to be empty; it just means you're deploying to $HOME.
 
-git push
+git push || die "Couldn't push!"
 ssh $HOST "cd $DIR && git pull"
