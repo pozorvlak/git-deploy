@@ -1,0 +1,47 @@
+git-deploy: Git plugin to enable one-touch deployment.
+
+There are many others like it, but this one is mine.
+
+
+USAGE
+
+1) Push to a bare repo somewhere - GitHub, perhaps.
+2) Set up passwordless ssh login on the host you intend to deploy to.
+3) git-clone your GitHub repo on the deployment host.
+4) In your development repo, set up some configuration variables:
+
+$ git config --add deploy.host [deployment host]
+$ git config --add deploy.dir  [directory of checkout on deployment host]
+
+5) Deploy your code:
+
+$ git deploy
+
+
+DISCUSSION
+
+Only a fool would attempt to deploy a site by pushing to a non-bare repo. This
+script doesn't do that. Instead, it assumes you have three repos:
+
+1) A development repo, probably on your local box.
+2) A central bare repo on a hosting site or company VCS server.
+3) A deployment repo, from which your code actually runs.
+
+This script, when run in (1), will push to (2), ssh to (3) and then pull from
+(2) to (3).
+
+
+FIXMES
+
+It may be a very bad idea to combine pushing and deployment like this. Then
+again, maybe it's a great idea. I have yet to find out.
+
+It would be nice to have a nicer way of setting up the necessary variables.
+
+The initial checkout on the deployment repo could be done automatically. 
+
+
+AUTHOR
+
+Copyright 2011 Miles Gould. This code is free software: see the file COPYING
+for details.
