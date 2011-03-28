@@ -3,6 +3,11 @@ git-deploy: Git plugin to enable one-touch deployment.
 There are many others like it, but this one is mine.
 
 
+INSTALLATION
+
+Copy (or symlink) the file git-deploy to somewhere in your PATH. Make sure it's executable.
+
+
 USAGE
 
 1) Push to a bare repo somewhere - GitHub, perhaps.
@@ -39,6 +44,9 @@ again, maybe it's a great idea. I have yet to find out.
 It would be nice to have a nicer way of setting up the necessary variables.
 
 The initial checkout on the deployment repo could be done automatically. 
+
+Maybe I could provide support for multiple deployment hosts. Would anyone use
+this? Possibly in cluster scenarios?
 
 
 AUTHOR
