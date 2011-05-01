@@ -11,12 +11,25 @@ die() {
 	exit 1
 }
 
-HOST=`git config --get deploy.host` || die "deploy.host not set!"
-DIR=`git config --get deploy.dir`   || die "deploy.dir not set!"
-if [ -z "$HOST" ]; then
+configure_host() {
+	echo -n "Enter host to deploy to: "
+        read HOST
+        git config --add deploy.host "$HOST"
+}
+
+configure_dir() {
+        echo -n "Enter directory to deploy to on $HOST: "
+        read DIR
+        git config --add deploy.dir "$DIR"
+}
+
+HOST=`git config --get deploy.host` || configure_host
+while [ -z "$HOST" ]; do
 	echo "deploy.host should be nonempty." >&2
-	exit 3
-fi
+	configure_host
+done
+
+DIR=`git config --get deploy.dir`   || configure_dir
 # It's totally OK for DIR to be empty; it just means you're deploying to $HOME.
 
 CMD_NAME=`basename "$0"`

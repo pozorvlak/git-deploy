@@ -9,25 +9,23 @@ Copy (or symlink) the file git-deploy to somewhere in your PATH. Make sure it's 
 
 Create a symlink/copy called git-undeploy to git-deploy, somewhere in your PATH.
 
+
 USAGE
 
 1) Push to a bare repo somewhere - GitHub, perhaps.
 2) Set up passwordless ssh login on the host you intend to deploy to.
 3) git-clone your GitHub repo on the deployment host.
-4) In your development repo, set up some configuration variables:
+4) Deploy your code:
 
-$ git config --add deploy.host [deployment host]
-$ git config --add deploy.dir  [directory of checkout on deployment host]
+    $ git deploy
 
-5) Deploy your code:
-
-$ git deploy
-
+The first time you invoke git-deploy, you will be prompted for the host and
+directory to deploy to.
 6) Oh no! You've discovered a bug in production that your extensive automated
 test suite didn't catch! You need to revert to the last deployed version NOW
 NOW NOW! Never fear:
 
-$ git undeploy
+    $ git undeploy
 
 
 DISCUSSION
@@ -41,6 +39,10 @@ script doesn't do that. Instead, it assumes you have three repos:
 
 git-deploy, when run in (1), will push to (2), ssh to (3) and then pull from
 (2) to (3).
+
+If you need to change the deployment host or directory, edit the git
+configuration variables deploy.host and deploy.dir with git config. For
+interactive use, git config -e is a convenient way of setting variables.
 
 git-undeploy simply checks out the last visited snapshot on the deployment
 repo, and resets the "master" branch to point at that snapshot. To fix the
@@ -56,8 +58,6 @@ FIXMES
 
 It may be a very bad idea to combine pushing and deployment like this. Then
 again, maybe it's a great idea. I have yet to find out.
-
-It would be nice to have a nicer way of setting up the necessary variables.
 
 The initial checkout on the deployment repo could be done automatically. 
 
