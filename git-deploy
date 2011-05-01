@@ -19,5 +19,13 @@ if [ -z "$HOST" ]; then
 fi
 # It's totally OK for DIR to be empty; it just means you're deploying to $HOME.
 
-git push || die "Couldn't push!"
-ssh $HOST "cd $DIR && git pull"
+CMD_NAME=`basename "$0"`
+if [ "$CMD_NAME" = "git-deploy" ]; then
+	git push || die "Couldn't push!"
+	ssh $HOST "cd $DIR && git pull"
+elif [ "$CMD_NAME" = "git-undeploy" ]; then
+	ssh $HOST "cd $DIR && git checkout HEAD@{1} \
+			&& git branch -f master HEAD && git checkout master"
+else
+	die "Command $0 not recognised."
+fi
