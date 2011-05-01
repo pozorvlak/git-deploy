@@ -7,6 +7,7 @@ INSTALLATION
 
 Copy (or symlink) the file git-deploy to somewhere in your PATH. Make sure it's executable.
 
+Create a symlink/copy called git-undeploy to git-deploy, somewhere in your PATH.
 
 USAGE
 
@@ -22,6 +23,12 @@ $ git config --add deploy.dir  [directory of checkout on deployment host]
 
 $ git deploy
 
+6) Oh no! You've discovered a bug in production that your extensive automated
+test suite didn't catch! You need to revert to the last deployed version NOW
+NOW NOW! Never fear:
+
+$ git undeploy
+
 
 DISCUSSION
 
@@ -32,8 +39,17 @@ script doesn't do that. Instead, it assumes you have three repos:
 2) A central bare repo on a hosting site or company VCS server.
 3) A deployment repo, from which your code actually runs.
 
-This script, when run in (1), will push to (2), ssh to (3) and then pull from
+git-deploy, when run in (1), will push to (2), ssh to (3) and then pull from
 (2) to (3).
+
+git-undeploy simply checks out the last visited snapshot on the deployment
+repo, and resets the "master" branch to point at that snapshot. To fix the
+bug and redeploy, you must either alter the master branch on the hosting repo
+too, or you must make your fixed snapshot a child of the one that you deployed
+(possibly by using git merge -s ours).
+
+Repeated git-undeploy's will not remove successive deployments. Only the most
+recent deployment will be reverted.
 
 
 FIXMES
