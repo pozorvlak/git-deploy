@@ -5,10 +5,11 @@ There are many others like it, but this one is mine.
 
 INSTALLATION
 
-Copy (or symlink) the file git-deploy to somewhere in your PATH. Make sure it's executable.
+    $ ./install
 
-Create a symlink/copy called git-undeploy to git-deploy, somewhere in your PATH.
+Or, to install site-wide:
 
+    $ sudo ./install
 
 USAGE
 

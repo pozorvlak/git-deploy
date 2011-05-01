@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Installation script for git-deploy and git-undeploy.
+
+if [ $EUID -ne 0 ]; then
+	DEFAULT=$HOME/bin
+else
+	DEFAULT=/usr/local/bin
+fi
+echo -n "Directory to install to [$DEFAULT]: "
+read INSTALL_DIR
+if [ -z "$INSTALL_DIR" ]; then
+	INSTALL_DIR="$DEFAULT"
+fi
+if [ -e "$INSTALL_DIR/git-deploy" ]; then
+	rm "$INSTALL_DIR/git-deploy"
+fi
+cp git-deploy $INSTALL_DIR
+cd $INSTALL_DIR
+if [ -e git-undeploy ]; then
+	rm git-undeploy
+fi
+ln -s git-deploy git-undeploy
